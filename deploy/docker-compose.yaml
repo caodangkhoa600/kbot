@@ -1,0 +1,4 @@
+services:
+  bot:
+    image: caodangkhoa600/kbot:latest
+    env_file: kbot.env
