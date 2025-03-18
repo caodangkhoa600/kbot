@@ -5,7 +5,7 @@ import { message } from 'telegraf/filters'
 import mongoose from 'mongoose'
 import MessageModel from './schemas/message'
 
-const PORT = 8000
+const PORT = 8080
 const openai = new OpenAI({ apiKey: process.env.GPT_TOKEN })
 
 const formatMessageForTelegram = (message: string): string => {
@@ -117,7 +117,12 @@ app.listen(PORT, async () => {
     const messages = previous?.messages_base64.map((text) => fromBinary(text)) ?? []
 
     const data = await callOpenAI(ctx.message.text, messages)
-    ctx.telegram.sendMessage(ctx.message.chat.id, data, { parse_mode: 'HTML' })
+
+    const splited = data.split(/\n\s*\n/).filter((e) => e)
+    splited.forEach(async (e) => {
+      await ctx.telegram.sendMessage(ctx.message.chat.id, e, { parse_mode: 'HTML' })
+    })
+
     addMessage(ctx.from.id, ctx.message.text)
   })
 
