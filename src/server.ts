@@ -119,10 +119,11 @@ app.listen(PORT, async () => {
     const data = await callOpenAI(ctx.message.text, messages)
 
     const splited = data.split(/\n\s*\n/).filter((e) => e)
-    splited.forEach(async (e) => {
-      await ctx.telegram.sendMessage(ctx.message.chat.id, e, { parse_mode: 'HTML' })
-    })
 
+    for (let index = 0; index < splited.length; index++) {
+      const element = splited[index]
+      await ctx.telegram.sendMessage(ctx.message.chat.id, element, { parse_mode: 'HTML' })
+    }
     addMessage(ctx.from.id, ctx.message.text)
   })
 
