@@ -67,7 +67,7 @@ const callOpenAI = async (message: string, previousMessage: string[]): Promise<s
   })
 
   const completion = await openai.chat.completions.create({
-    model: 'gpt-4o',
+    model: 'o3',
     messages: userMessages,
     store: true
   })
